@@ -114,7 +114,10 @@ def monthToNum(series):
         month = series.Date.split()[0]
         day = series.Date.split()[1]
         series.Month = months.get(month)
-        series.Day = day
+        if len(day) == 1:
+            series.Day = '0' + day
+        else:
+            series.Day = day
 
 def addStart(series):
     if series.Month == '01':
