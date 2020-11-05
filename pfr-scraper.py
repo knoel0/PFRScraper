@@ -164,10 +164,10 @@ def scrapeGameScoresAndResult(series):
 
     a = df.loc[df['Week'] == series.Week]
 
-    if a.iloc[0,5] == '@':
+    if a.iloc[0,6] == '@':
         series.HomePoints = a.iloc[0,9]
         series.AwayPoints = a.iloc[0,8]
-    if a.iloc[0,5] != '@':
+    if a.iloc[0,6] != '@':
         series.HomePoints = a.iloc[0,8]
         series.AwayPoints = a.iloc[0,9]
 
@@ -180,7 +180,6 @@ def scrapeGameScoresAndResult(series):
     if a.iloc[0,4] == 'T':
         series.Tie1 = mainTeam
         series.Tie2 = list(teamdict2.keys())[list(teamdict2.values()).index(a.iloc[0,7])]
-
 
 def scrapeGames():
     df = pullTable('https://www.pro-football-reference.com/years/2020/games.htm', 'games', header=True)
