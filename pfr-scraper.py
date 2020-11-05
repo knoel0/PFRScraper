@@ -232,6 +232,9 @@ def scrapeGames():
     df.apply(addHomeAway, axis=1)
     df.apply(scrapeGameScoresAndResult, axis=1)
 
+    df = df.drop(columns=['Day', 'Date', 'Time', 'W', 'L', 'PtsW', 'PtsL', 'YdsW', 'TOW', 'YdsL', 'TOL', 'Month', 'TimeTemp'])
+    df = df.drop(columns=[''])
+
     df.to_csv (r'./games-scrape/games.csv')
 
 def pullRosters():
