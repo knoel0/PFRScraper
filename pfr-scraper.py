@@ -167,18 +167,19 @@ def scrapeGameScoresAndResult(series):
     if a.iloc[0,5] == '@':
         series.HomePoints = a.iloc[0,9]
         series.AwayPoints = a.iloc[0,8]
-    series.HomePoints = a.iloc[0,8]
-    series.AwayPoints = a.iloc[0,9]
+    if a.iloc[0,5] != '@':
+        series.HomePoints = a.iloc[0,8]
+        series.AwayPoints = a.iloc[0,9]
 
     if a.iloc[0,4] == 'W':
         series.Winner = mainTeam
-        series.Loser = a.iloc[0,7]
+        series.Loser = list(teamdict2.keys())[list(teamdict2.values()).index(a.iloc[0,7])]
     if a.iloc[0,4] == 'L':
-        series.Winner = a.iloc[0,7]
+        series.Winner = list(teamdict2.keys())[list(teamdict2.values()).index(a.iloc[0,7])]
         series.Loser = mainTeam
     if a.iloc[0,4] == 'T':
         series.Tie1 = mainTeam
-        series.Tie2 = a.iloc[0,7]
+        series.Tie2 = list(teamdict2.keys())[list(teamdict2.values()).index(a.iloc[0,7])]
 
 
 def scrapeGames():
