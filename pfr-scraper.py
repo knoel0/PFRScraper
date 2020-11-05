@@ -132,18 +132,50 @@ def addHomeAway(series):
         series.AwayTeam = list(teamdict2.keys())[list(teamdict2.values()).index(series.L)]        
 
 def scrapeGameScoresAndResult(series):
-    x = series.HomeTeam
-    hometeam = teamdict.get(x)
-    print(x)
-    print(hometeam)
+
+    def pull(url, tableID, header=True):
+        res = requests.get(url)
+        ## Work around comments
+        comm = re.compile("<!--|-->")
+        soup = bs4.BeautifulSoup(comm.sub("", res.text), 'lxml')
+        table = soup.find('table', id=tableID)
+        table_body = table.find('tbody')
+        rows = table_body.findAll('tr')
+        game_data = [[td.getText() for td in rows[i].findAll(['th', 'td'])]
+        for i in range(len(rows))
+        ]
+        data = pd.DataFrame(game_data)
+        if header == True:
+            data_header = table.find('thead')
+            data_header = data_header.find('tr', {'class': None})
+            data_header = data_header.findAll('th')
+            header = []
+            for i in range(len(data.columns)):
+                    header.append(data_header[i].getText())
+            data.columns = header
+            data = data.loc[data[header[0]] != header[0]]
+        data = data.reset_index(drop = True)
+        return(data)
+
+    hometeam = list(teamdict2.keys())[list(teamdict2.values()).index(series.W)]
+    hometeam = teamdict.get(hometeam)
     url = 'https://www.pro-football-reference.com/teams/' + hometeam + '/2020/gamelog/'
-    df = pullTable(url, 'gamelog2020', header=True)
+    df = pull(url, 'gamelog2020', header=True)
 
-    print(df)
+    a = df.loc[df['Week'] == series.Week]
 
-    #mask = df['Week'] == series.Week
+    series.HomePoints = a.iloc[0,8]
+    series.AwayPoints = a.iloc[0,9]
 
-    #if df.loc[df['Week'] == series.Week]:
+    if a.iloc[0,4] == 'W':
+        series.Winner = series.HomeTeam
+        series.Loser = series.AwayTeam
+    if a.iloc[0,4] == 'L':
+        series.Winner = series.AwayTeam
+        series.Loser = series.HomeTeam
+    if a.iloc[0,4] == 'T':
+        series.Tie1 = series.HomeTeam
+        series.Tie2 = series.AwayTeam
 
 
 def scrapeGames():
@@ -170,8 +202,8 @@ def scrapeGames():
         time.append('')
         home_team.append('')
         away_team.append('')
-        home_points.append(0)
-        away_points.append(0)
+        home_points.append('')
+        away_points.append('')
         winner.append('')
         loser.append('')
         tie1.append('')
@@ -185,20 +217,21 @@ def scrapeGames():
     df['AwayTeam'] = away_team
     df['HomePoints'] = home_points
     df['AwayPoints'] = away_points
-    #df['Winner'] = winner
-    #df['Loser'] = loser
-    #df['Tie1'] = tie1
-    #df['Tie2'] = tie2
+    df['Winner'] = winner
+    df['Loser'] = loser
+    df['Tie1'] = tie1
+    df['Tie2'] = tie2
 
     df.rename(columns={'Winner/tie': 'W', 'Loser/tie': 'L'}, inplace=True)
     df.apply(standardToMilitary, axis=1)
     df.apply(monthToNum, axis=1)
     df.apply(addStart, axis=1)
     df.apply(addHomeAway, axis=1)
-    #df.apply(scrapeGameScoresAndResult, axis=1)
+    df.apply(scrapeGameScoresAndResult, axis=1)
+
     print(df)
 
-    df.to_csv (r'./games-scrape/games.csv')
+    #df.to_csv (r'./games-scrape/games.csv')
 
 def pullRosters():
     for key, value in teamdict.items():
@@ -247,7 +280,7 @@ def pullRosters():
 
         df = df.drop(columns=['G', 'GS', 'BirthDate', 'AV', 'Drafted (tm/rnd/yr)', 'Salary'])
 
-        df.to_csv (r'./team-roster-scrapes/' + key + '.csv')
+        #df.to_csv (r'./team-roster-scrapes/' + key + '.csv')
 
 def findTables(url):
     res = requests.get(url)
