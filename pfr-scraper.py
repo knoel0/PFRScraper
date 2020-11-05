@@ -94,7 +94,7 @@ def standardToMilitary(series):
             hour = '0' + hour  
         return(hour + ':' + minute + ':00')
 
-        series.TimeTemp = update(series.Time)
+    series.TimeTemp = update(series.Time)
 
 def monthToNum(series):
         months = {
@@ -119,7 +119,7 @@ def monthToNum(series):
 def addStart(series):
     if series.Month == '01':
         series.Start = '2021-' + series.Month + '-' + series.Day + ' ' + series.TimeTemp
-    else:
+    if series.Month != '01':
         series.Start = '2020-' + series.Month + '-' + series.Day + ' ' + series.TimeTemp
 
 def addHomeAway(series):
@@ -157,25 +157,28 @@ def scrapeGameScoresAndResult(series):
         data = data.reset_index(drop = True)
         return(data)
 
-    hometeam = list(teamdict2.keys())[list(teamdict2.values()).index(series.W)]
-    hometeam = teamdict.get(hometeam)
-    url = 'https://www.pro-football-reference.com/teams/' + hometeam + '/2020/gamelog/'
+    mainTeam = list(teamdict2.keys())[list(teamdict2.values()).index(series.W)]
+    mainTeamTemp = teamdict.get(mainTeam)
+    url = 'https://www.pro-football-reference.com/teams/' + mainTeamTemp + '/2020/gamelog/'
     df = pull(url, 'gamelog2020', header=True)
 
     a = df.loc[df['Week'] == series.Week]
 
+    if a.iloc[0,5] == '@':
+        series.HomePoints = a.iloc[0,9]
+        series.AwayPoints = a.iloc[0,8]
     series.HomePoints = a.iloc[0,8]
     series.AwayPoints = a.iloc[0,9]
 
     if a.iloc[0,4] == 'W':
-        series.Winner = series.HomeTeam
-        series.Loser = series.AwayTeam
+        series.Winner = mainTeam
+        series.Loser = a.iloc[0,7]
     if a.iloc[0,4] == 'L':
-        series.Winner = series.AwayTeam
-        series.Loser = series.HomeTeam
+        series.Winner = a.iloc[0,7]
+        series.Loser = mainTeam
     if a.iloc[0,4] == 'T':
-        series.Tie1 = series.HomeTeam
-        series.Tie2 = series.AwayTeam
+        series.Tie1 = mainTeam
+        series.Tie2 = a.iloc[0,7]
 
 
 def scrapeGames():
@@ -229,9 +232,7 @@ def scrapeGames():
     df.apply(addHomeAway, axis=1)
     df.apply(scrapeGameScoresAndResult, axis=1)
 
-    print(df)
-
-    #df.to_csv (r'./games-scrape/games.csv')
+    df.to_csv (r'./games-scrape/games.csv')
 
 def pullRosters():
     for key, value in teamdict.items():
