@@ -184,6 +184,7 @@ def getGameScoresResult(hometeam_abbr: str, awayteam_abbr: str, week: str) -> di
     return scoresResult 
 
 def getGameStats(hometeam_abbr: str, year: str, month: str, day: str) -> dict:
+    
     urlAbbr = teamDict[hometeam_abbr]["abbrNameForUrl"]
     url = "https://www.pro-football-reference.com/boxscores/" + year + month + day + '0' + urlAbbr + '.htm'
 
@@ -300,12 +301,14 @@ def getTeamRoster(abbr: str) -> df:
     return df
 
 def getAllTeamRosters() -> list:
+    
     dfList = []
     for team in teamDict:
         dfList.append(getTeamRoster(team))
     return dfList
 
 def getTable(url: str, tableID: str, header=True) -> df:
+    
     res = requests.get(url)
     
     ## Work around comments
@@ -331,4 +334,5 @@ def getTable(url: str, tableID: str, header=True) -> df:
         data.columns = column_names_list
         data = data.loc[data[column_names_list[0]] != column_names_list[0]]
     data = data.reset_index(drop = True)
+    
     return(data)
