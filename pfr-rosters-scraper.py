@@ -1,6 +1,12 @@
-from helpermodule import teams, get_table, abbr_to_teamname_end
+from helper import teams, get_table, abbr_to_teamname_end
+from sqlalchemy import create_engine
+
 import pandas as pd
 from datetime import datetime
+
+engine = create_engine('mysql://root:Darrellerevis24@localhost/fantasy_fb')
+
+print(engine.table_names())
 
 def getTeamRoster(abbr: str) -> pd.DataFrame:
     
@@ -32,6 +38,6 @@ def getTeamRoster(abbr: str) -> pd.DataFrame:
 
     return df
 
-for team in teams:
-    path = r'/Users/kanemnoel/Desktop/portfolio-projects/fantasy-fb-app-scrapes/rosters/' + team + '/' + datetime.today().strftime('%Y%m%d-%H%M%S') + '-' + team + '.csv'
-    getTeamRoster(team).to_csv(path, index=False, header=True)
+#for team in teams:
+#    path = r'/Users/kanemnoel/Desktop/portfolio-projects/pfr-scrapes/rosters/' + team + '/' + datetime.today().strftime('%Y%m%d-%H%M%S') + '-' + team + '.csv'
+#    getTeamRoster(team).to_csv(path, index=False, header=True)

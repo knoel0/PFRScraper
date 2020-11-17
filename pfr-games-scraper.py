@@ -1,4 +1,4 @@
-from helpermodule import get_table, months, longname_to_abbr
+from helper import get_table, months, longname_to_abbr
 from datetime import datetime
 import pandas as pd
 
@@ -60,5 +60,5 @@ df.apply(add_start_home_away, axis=1)
 df = df.drop(columns=['Day', 'Date', 'Time', 'W', 'L', 'PtsW', 'PtsL', 'YdsW', 'TOW', 'YdsL', 'TOL', ''], axis=1)
     
 #add season to path
-path = r'/Users/kanemnoel/Desktop/portfolio-projects/fantasy-fb-app-scrapes/games/' + datetime.today().strftime('%Y%m%d-%H%M%S') + '.csv'
+path = r'/Users/kanemnoel/Desktop/portfolio-projects/pfr-scrapes/games/' + datetime.today().strftime('%Y%m%d-%H%M%S') + '.csv'
 df.to_csv(path, index=False, header=True)

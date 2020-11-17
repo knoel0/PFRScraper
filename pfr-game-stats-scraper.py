@@ -1,4 +1,4 @@
-from helpermodule import teams, urlabbr_to_abbr, substring_to_abbr, get_table, get_all_tagtext_by_class, stats_template
+from helper import teams, urlabbr_to_abbr, substring_to_abbr, get_table, get_all_tagtext_by_class, stats_template
 import pandas as pd
 from datetime import datetime
 
@@ -182,5 +182,5 @@ awaydef_player_stats['sacks'] = away_sacks
 players.append(list(homedef_player_stats.values()))
 players.append(list(awaydef_player_stats.values()))
 
-path = r'/Users/kanemnoel/Desktop/portfolio-projects/fantasy-fb-app-scrapes/game-stats/' + home_abbr + '/' + 'vs' + away_abbr + datetime.today().strftime('%Y%m%d-%H%M%S') + '.csv'
+path = r'/Users/kanemnoel/Desktop/portfolio-projects/pfr-scrapes/game-stats/' + home_abbr + '/' + 'vs' + away_abbr + datetime.today().strftime('%Y%m%d-%H%M%S') + '.csv'
 pd.DataFrame(players, columns=column_names).to_csv(path, index=False, header=True)

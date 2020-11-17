@@ -1,4 +1,4 @@
-from helpermodule import teams, get_table
+from helper import teams, get_table
 
 def get_game_scoreresult(hometeam_abbr: str, awayteam_abbr: str, week: str):
 
