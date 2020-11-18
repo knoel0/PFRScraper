@@ -229,6 +229,7 @@ def get_table(url: str, table_id: str, header=True) -> pd.DataFrame:
         data.columns = column_names_list
         data = data.loc[data[column_names_list[0]] != column_names_list[0]]
     data = data.reset_index(drop = True)
+    data.columns = data.columns.str.strip()
     
     return data
 
