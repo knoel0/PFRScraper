@@ -58,7 +58,10 @@ df['Start'] = df['Home'] = df['Away'] = l
 df.rename(columns={'Winner/tie': 'W', 'Loser/tie': 'L'}, inplace=True)
 df.apply(add_start_home_away, axis=1)
 df = df.drop(columns=['Day', 'Date', 'Time', 'W', 'L', 'PtsW', 'PtsL', 'YdsW', 'TOW', 'YdsL', 'TOL', ''], axis=1)
-    
+df.Week = pd.to_numeric(df.Week, errors='ignore').fillna(0).astype(int)
+
 #add season to path
 path = r'/Users/kanemnoel/Desktop/portfolio-projects/pfr-scrapes/games/' + datetime.today().strftime('%Y%m%d-%H%M%S') + '.csv'
+
+print(df)
 df.to_csv(path, index=False, header=True)
