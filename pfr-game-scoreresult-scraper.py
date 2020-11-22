@@ -1,4 +1,7 @@
-from helper import teams, get_table
+import sys
+sys.path.insert(0, '/Users/kanemnoel/Desktop/portfolio-projects/pfr-scraper/modules')
+from bs_helper import get_table
+from pfrscraper_helper import teams
 
 def get_game_scoreresult(hometeam_abbr: str, awayteam_abbr: str, week: str):
 

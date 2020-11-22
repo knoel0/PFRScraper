@@ -1,6 +1,9 @@
 import os
 import json
-from helper import teams, urlabbr_to_abbr, substring_to_abbr, get_table, get_all_tagtext_by_class, stats_template
+import sys
+sys.path.insert(0, '/Users/kanemnoel/Desktop/portfolio-projects/pfr-scraper/modules')
+from bs_helper import get_table, get_all_tagtext_by_class
+from pfrscraper_helper import teams, urlabbr_to_abbr, substring_to_abbr, stats_template
 import pandas as pd
 from datetime import datetime
 

@@ -1,6 +1,9 @@
 import os
 import json
-from helper import teams, get_table, abbr_to_teamname_end
+import sys
+sys.path.insert(0, '/Users/kanemnoel/Desktop/portfolio-projects/pfr-scraper/modules')
+from bs_helper import get_table
+from pfrscraper_helper import teams, abbr_to_teamname_end
 import pandas as pd
 from datetime import datetime
 

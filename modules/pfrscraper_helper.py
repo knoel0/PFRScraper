@@ -1,7 +1,3 @@
-import pandas as pd
-import requests, bs4
-import re
-
 teams = {
     'ARI': {
         'Abbr Url': 'crd',
@@ -149,36 +145,36 @@ months = {
 }
 
 stats_template = {
-        'name': '',
-        'team': '',
-        'passYards': 0,
-        'passTds': 0,
-        'passInts': 0,
-        'rushYds': 0,
-        'rushTds': 0,
-        'recYds': 0,
-        'recTds': 0,
-        'twoPntConvs': 0,
-        'fumbLost': 0,
-        'fumbRecTd': 0,
-        'patMade': 0,
-        'fgMade0To49': 0,
-        'fgMade50Plus': 0,
-        'sacks': 0,
-        'defInts': 0,
-        'defFumbRec': 0,
-        'safeties': 0,
-        'defTds': 0,
-        'kickPuntRetTds': 0,
-        'twoPntConvRet': 0,
-        'pntsAll0': 0,
-        'pntsAll1To6': 0,
-        'pntsAll7To13': 0,
-        'pntsAll14To20': 0,
-        'pntsAll21To27': 0,
-        'pntsAll28To34': 0,
-        'pntsAll35Plus': 0
-    }
+    'name': '',
+    'team': '',
+    'passYards': 0,
+    'passTds': 0,
+    'passInts': 0,
+    'rushYds': 0,
+    'rushTds': 0,
+    'recYds': 0,
+    'recTds': 0,
+    'twoPntConvs': 0,
+    'fumbLost': 0,
+    'fumbRecTd': 0,
+    'patMade': 0,
+    'fgMade0To49': 0,
+    'fgMade50Plus': 0,
+    'sacks': 0,
+    'defInts': 0,
+    'defFumbRec': 0,
+    'safeties': 0,
+    'defTds': 0,
+    'kickPuntRetTds': 0,
+    'twoPntConvRet': 0,
+    'pntsAll0': 0,
+    'pntsAll1To6': 0,
+    'pntsAll7To13': 0,
+    'pntsAll14To20': 0,
+    'pntsAll21To27': 0,
+    'pntsAll28To34': 0,
+    'pntsAll35Plus': 0
+}
 
 def urlabbr_to_abbr(urlabbr: str) -> str:
     for abbr, nestedDict in teams.items():
@@ -203,53 +199,3 @@ def abbr_to_teamname_end(abbr: str) -> str:
         return teams[abbr]["Full Name"].split()[2]
     else:
         return teams[abbr]["Full Name"].split()[1]
-
-def get_table(url: str, table_id: str, header=True) -> pd.DataFrame:
-    
-    res = requests.get(url)
-    comm = re.compile("<!--|-->")
-    soup = bs4.BeautifulSoup(comm.sub("", res.text), 'lxml')
-    
-    table = soup.find('table', id=table_id)
-    table_body = table.find('tbody')
-    rows = table_body.findAll('tr', {'class': None})
-    data_list = [
-        [td.getText() for td in rows[i].findAll(['th', 'td'])]
-        for i in range(len(rows))
-    ]
-    data = pd.DataFrame(data_list)
-
-    if header == True:
-        column_names = table.find('thead')
-        column_names = column_names.find('tr', {'class': None})
-        column_names = column_names.findAll('th')
-        column_names_list = []
-        for i in range(len(data.columns)):
-            column_names_list.append(column_names[i].getText())
-        data.columns = column_names_list
-        data = data.loc[data[column_names_list[0]] != column_names_list[0]]
-    data = data.reset_index(drop = True)
-    data.columns = data.columns.str.strip()
-    
-    return data
-
-def get_tagtext_by_class(url: str, tag_type: str, tag_class: str) -> str:
-
-    res = requests.get(url)
-    comm = re.compile("<!--|-->")
-    soup = bs4.BeautifulSoup(comm.sub("", res.text), 'lxml') 
-
-    return soup.find(tag_type, {'class': tag_class}).text    
-
-def get_all_tagtext_by_class(url: str, tag_type: str, tag_class: str) -> list: 
-    
-    res = requests.get(url)
-    comm = re.compile("<!--|-->")
-    soup = bs4.BeautifulSoup(comm.sub("", res.text), 'lxml')
-
-    tags = soup.findAll(tag_type, {'class': tag_class})
-    tag_list = []
-    for tag in tags:
-        tag_list.append(tag.text)
-    
-    return tag_list

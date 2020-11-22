@@ -1,6 +1,10 @@
 import os
 import json
-from helper import get_table, months, longname_to_abbr
+import sys
+sys.path.insert(0, '/Users/kanemnoel/Desktop/portfolio-projects/pfr-scraper/modules')
+from bs_helper import get_table
+from pfrscraper_helper import months, longname_to_abbr
+from helper import get_table
 from datetime import datetime
 import pandas as pd
 
