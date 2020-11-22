@@ -1,131 +1,163 @@
 teams = {
     'ARI': {
         'Abbr Url': 'crd',
-        'Full Name': 'Arizona Cardinals'
+        'Full Name': 'Arizona Cardinals',
+        'Team Name': 'Cardinals'
     },
     'ATL': {
         'Abbr Url': 'atl',
-        'Full Name': 'Atlanta Falcons'
+        'Full Name': 'Atlanta Falcons',
+        'Team Name': 'Falcons'
     },
     'BAL': {
         'Abbr Url': 'rav',
-        'Full Name': 'Baltimore Ravens'
+        'Full Name': 'Baltimore Ravens',
+        'Team Name': 'Ravens'
     },
     'BUF': {
         'Abbr Url': 'buf',
-        'Full Name': 'Buffalo Bills'
+        'Full Name': 'Buffalo Bills',
+        'Team Name': 'Bills'
     },
     'CAR': {
         'Abbr Url': 'car',
-        'Full Name': 'Carolina Panthers'
+        'Full Name': 'Carolina Panthers',
+        'Team Name': 'Panthers'
     },
     'CHI': {
         'Abbr Url': 'chi',
-        'Full Name': 'Chicago Bears'
+        'Full Name': 'Chicago Bears',
+        'Team Name': 'Bears'
     },
     'CIN': {
         'Abbr Url': 'cin',
-        'Full Name': 'Cincinnati Bengals'
+        'Full Name': 'Cincinnati Bengals',
+        'Team Name': 'Bengals'
     },
     'CLE': {
         'Abbr Url': 'cle',
-        'Full Name': 'Cleveland Browns'
+        'Full Name': 'Cleveland Browns',
+        'Team Name': 'Browns'
     },
     'DAL': {
         'Abbr Url': 'dal',
-        'Full Name': 'Dallas Cowboys'
+        'Full Name': 'Dallas Cowboys',
+        'Team Name': 'Cowboys'
     },
     'DEN': {
         'Abbr Url': 'den',
-        'Full Name': 'Denver Broncos'
+        'Full Name': 'Denver Broncos',
+        'Team Name': 'Broncos'
     },
     'DET': {
         'Abbr Url': 'det',
-        'Full Name': 'Detroit Lions'
+        'Full Name': 'Detroit Lions',
+        'Team Name': 'Lions'
     },
     'GB': {
         'Abbr Url': 'gnb',
-        'Full Name': 'Green Bay Packers'
+        'Full Name': 'Green Bay Packers',
+        'Team Name': 'Packers'
     },
     'HOU': {
         'Abbr Url': 'htx',
-        'Full Name': 'Houston Texans'
+        'Full Name': 'Houston Texans',
+        'Team Name': 'Texans'
     },
     'IND': {
         'Abbr Url': 'clt',
-        'Full Name': 'Indianapolis Colts'
+        'Full Name': 'Indianapolis Colts',
+        'Team Name': 'Colts'
     },
     'JAX': {
         'Abbr Url': 'jax',
-        'Full Name': 'Jacksonville Jaguars'
+        'Full Name': 'Jacksonville Jaguars',
+        'Team Name': 'Jaguars'
     },
     'KC': {
         'Abbr Url': 'kan',
-        'Full Name': 'Kansas City Chiefs'
+        'Full Name': 'Kansas City Chiefs',
+        'Team Name': 'Chiefs'
     },
     'LAC': {
         'Abbr Url': 'sdg',
-        'Full Name': 'Los Angeles Chargers'
+        'Full Name': 'Los Angeles Chargers',
+        'Team Name': 'Chargers'
     },
     'LAR': {
         'Abbr Url': 'ram',
-        'Full Name': 'Los Angeles Rams'
+        'Full Name': 'Los Angeles Rams',
+        'Team Name': 'Rams'
     },
     'LV': {
         'Abbr Url': 'rai',
-        'Full Name': 'Las Vegas Raiders'
+        'Full Name': 'Las Vegas Raiders',
+        'Team Name': 'Raiders'
     },
     'MIA': {
         'Abbr Url': 'mia',
-        'Full Name': 'Miami Dolphins'
+        'Full Name': 'Miami Dolphins',
+        'Team Name': 'Dolphins'
     },
     'MIN': {
         'Abbr Url': 'min',
-        'Full Name': 'Minnesota Vikings'
+        'Full Name': 'Minnesota Vikings',
+        'Team Name': 'Vikings'
     },
     'NE': {
         'Abbr Url': 'nwe',
-        'Full Name': 'New England Patriots'
+        'Full Name': 'New England Patriots',
+        'Team Name': 'Patriots'
     },
     'NO': {
         'Abbr Url': 'nor',
-        'Full Name': 'New Orleans Saints'
+        'Full Name': 'New Orleans Saints',
+        'Team Name': 'Saints'
     },
     'NYG': {
         'Abbr Url': 'nyg',
-        'Full Name': 'New York Giants'
+        'Full Name': 'New York Giants',
+        'Team Name': 'Giants'
     },
     'NYJ': {
         'Abbr Url': 'nyj',
-        'Full Name': 'New York Jets'
+        'Full Name': 'New York Jets',
+        'Team Name': 'Jets'
     },
     'PHI': {
         'Abbr Url': 'phi',
-        'Full Name': 'Philadelphia Eagles'
+        'Full Name': 'Philadelphia Eagles',
+        'Team Name': 'Eagles'
     },
     'PIT': {
         'Abbr Url': 'pit',
-        'Full Name': 'Pittsburgh Steelers'
+        'Full Name': 'Pittsburgh Steelers',
+        'Team Name': 'Steelers'
     },
     'SEA': {
         'Abbr Url': 'sea',
-        'Full Name': 'Seattle Seahawks'
+        'Full Name': 'Seattle Seahawks',
+        'Team Name': 'Seahawks'
     },
     'SF': {
         'Abbr Url': 'sfo',
-        'Full Name': 'San Francisco 49ers'
+        'Full Name': 'San Francisco 49ers',
+        'Team Name': '49ers'
     },
     'TB': {
         'Abbr Url': 'tam',
-        'Full Name': 'Tampa Bay Buccaneers'
+        'Full Name': 'Tampa Bay Buccaneers',
+        'Team Name': 'Buccaneers'
     },
     'TEN': {
         'Abbr Url': 'oti',
-        'Full Name': 'Tennessee Titans'
+        'Full Name': 'Tennessee Titans',
+        'Team Name': 'Titans'
     },
     'WAS': {
         'Abbr Url': 'was',
-        'Full Name': 'Washington Football Team'
+        'Full Name': 'Washington Football Team',
+        'Team Name': 'Football Team'
     }
 }
 

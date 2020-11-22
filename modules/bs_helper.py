@@ -37,7 +37,13 @@ def get_tagtext_by_class(url: str, tag_type: str, tag_class: str) -> str:
     comm = re.compile("<!--|-->")
     soup = bs4.BeautifulSoup(comm.sub("", res.text), 'lxml') 
 
-    return soup.find(tag_type, {'class': tag_class}).text    
+    return soup.find(tag_type, {'class': tag_class}).text 
+
+def get_tag_by_class(url: str, tag_type: str, tag_class: str) -> str:
+    res = requests.get(url)
+    comm = re.compile("<!--|-->")
+    soup = bs4.BeautifulSoup(comm.sub("", res.text), 'lxml') 
+    return soup.find(tag_type, {'class': tag_class})
 
 def get_all_tagtext_by_class(url: str, tag_type: str, tag_class: str) -> list: 
     

@@ -2,12 +2,49 @@ import os
 import json
 import sys
 sys.path.insert(0, '/Users/kanemnoel/Desktop/portfolio-projects/pfr-scraper/modules')
-from bs_helper import get_table, get_all_tagtext_by_class
+from bs_helper import get_table, get_all_tagtext_by_class, get_tagtext_by_class, get_tag_by_class
 from pfrscraper_helper import teams, urlabbr_to_abbr, substring_to_abbr, stats_template
 import pandas as pd
 from datetime import datetime
 
 config = json.load(open(os.path.dirname(os.path.realpath(__file__)) + '/config.json'))
+
+def get_game_scoreresult(hometeam_abbr: str, awayteam_abbr: str, week: str) -> dict:
+
+    scoreresult = {
+        'Week': week,
+        'Home Team': hometeam_abbr,
+        'Home Points': None,
+        'Away Team': awayteam_abbr,
+        'Away Points': None,
+        'Winner': None,
+        'Loser': None,
+        'Tie': None
+    }
+
+    url_abbr = teams[hometeam_abbr]["Abbr Url"]
+    url = 'https://www.pro-football-reference.com/teams/' + url_abbr + '/2020/gamelog/'
+    df = get_table(url, 'gamelog2020', header=True)
+    
+    row = df.loc[df['Week'] == week]
+    if row.iloc[0,6] == '@':
+        scoreresult['Home Points'] = row.iloc[0,9]
+        scoreresult['Away Points'] = row.iloc[0,8]
+    else:
+        scoreresult['Home Points'] = row.iloc[0,8]
+        scoreresult['Away Points'] = row.iloc[0,9]
+    if row.iloc[0,4] == 'W':
+        scoreresult['Winner'] = hometeam_abbr
+        scoreresult['Loser'] = awayteam_abbr
+        scoreresult['Tie'] = False
+    elif row.iloc[0,4] == 'L':
+        scoreresult['Winner'] = awayteam_abbr
+        scoreresult['Loser'] = hometeam_abbr
+        scoreresult['Tie'] = False
+    elif row.iloc[0,4] == 'T':
+        scoreresult['Tie'] = True
+
+    return scoreresult
 
 def addFg(player: pd.Series):
     
@@ -95,10 +132,7 @@ for player in df_kicking.itertuples():
     players.append(list(kicker_stats.values()))    
 
 ## Defense/Special Teams
-if len(teams[home_abbr]["Full Name"].split()) == 3:
-    home_name = teams[home_abbr]["Full Name"].split()[2]
-else:
-    home_name = teams[home_abbr]["Full Name"].split()[1]
+home_name = teams[home_abbr]["Team Name"]
 home_team = home_abbr
 home_ints = home_tds = home_fumbrec = 0
 home_sacks = 0.0
@@ -119,11 +153,12 @@ for player in df_defense.itertuples():
         home_fumbrec += int(player[14])
     else:
         while not away_team_isset:
-            if len(teams[urlabbr_to_abbr(player[2].lower())]['Full Name'].split()) == 3:
-                away_name = teams[urlabbr_to_abbr(player[2].lower())]['Full Name'].split()[2]
-            else:
-                away_name = teams[urlabbr_to_abbr(player[2].lower())]['Full Name'].split()[1]
-            away_team = urlabbr_to_abbr(player[2].lower())
+            if player[2] in teams:
+                away_name = teams[player[2]]['Team Name']
+                away_team = player[2]
+            else:    
+                away_name = teams[urlabbr_to_abbr(player[2].lower())]['Team Name']
+                away_team = urlabbr_to_abbr(player[2].lower())
             away_team_isset = True
         away_ints += int(player[3])
         away_tds += (int(player[5]) + int(player[16]))
@@ -189,5 +224,20 @@ awaydef_player_stats['sacks'] = away_sacks
 players.append(list(homedef_player_stats.values()))
 players.append(list(awaydef_player_stats.values()))
 
-path = "{p}{t}/vs{a}{d}-{t}.csv".format(p=config['path_gamestats'], t=home_abbr, a=away_abbr, d=datetime.today().strftime('%Y%m%d-%H%M%S'))
-pd.DataFrame(players, columns=column_names).to_csv(path, index=False, header=True)
+father = get_tag_by_class(url, 'div', 'game_summaries compressed')
+child = father.findNext('h2').findNext('a')
+week = child.text
+week_num = week.split(' ')
+weeknumber = week_num[1]
+
+df_boxscore = pd.DataFrame.from_records([get_game_scoreresult(home_abbr, away_abbr, weeknumber)])
+df_stats = pd.DataFrame(players, columns=column_names)
+
+path_boxscore = "{p}{t}/{w}/boxscore/{d}.csv".format(p=config['path_gamestats'], t=home_abbr, w=weeknumber, a=away_abbr, d=datetime.today().strftime('%Y%m%d-%H%M%S'))
+
+path_stats = "{p}{t}/{w}/stats/{d}.csv".format(p=config['path_gamestats'], t=home_abbr, w=weeknumber, a=away_abbr, d=datetime.today().strftime('%Y%m%d-%H%M%S'))
+
+print(df_boxscore)
+df_boxscore.to_csv(path_boxscore, index=False, header=True)
+print(df_stats)
+df_stats.to_csv(path_stats, index=False, header=True)
