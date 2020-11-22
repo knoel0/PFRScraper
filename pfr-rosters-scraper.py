@@ -6,6 +6,11 @@ from datetime import datetime
 
 config = json.load(open(os.path.dirname(os.path.realpath(__file__)) + '/config.json'))
 
+def feetinches_to_cm(feetinches: str) -> float:
+    if feetinches != '':
+        x = feetinches.split("-")
+        return ((int(x[0]) * 12) + int(x[1])) * 2.54
+
 def get_roster(abbr: str) -> pd.DataFrame:
     
     url = "https://www.pro-football-reference.com/teams/{}/2020_roster.htm".format(teams[abbr]['Abbr Url'])
@@ -26,10 +31,16 @@ def get_roster(abbr: str) -> pd.DataFrame:
     df.loc[df['Pos'] == "LS/TE", 'TE'] = 1
 
     df = df.drop(df[(df.Pos == 'OL') | (df.Pos == 'OT') | (df.Pos == '') | (df.Pos == 'T') | (df.Pos == 'G') | (df.Pos == 'OG') | (df.Pos == 'C') | (df.Pos == 'DL') | (df.Pos == 'DE') | (df.Pos == 'LS') | (df.Pos == 'DT') | (df.Pos == 'LOLB') | (df.Pos == 'OLB') | (df.Pos == 'ILB') | (df.Pos == 'SS')| (df.Pos == 'LILB') | (df.Pos == 'MLB') | (df.Pos == 'LB') | (df.Pos == 'CB') | (df.Pos == 'DB') | (df.Pos == 'LT') | (df.Pos == 'LG') | (df.Pos == 'FS') | (df.Pos == 'S') | (df.Pos == 'P') | (df.Pos == 'EDGE') | (df.Pos == 'LG') | (df.Pos == 'NT') | (df.Pos == 'RILB')].index)
-    df = df.drop(columns=['G', 'GS', 'BirthDate', 'AV', 'Drafted (tm/rnd/yr)', 'Salary', 'Pos'])
+    df = df.drop(columns=['G', 'GS', 'BirthDate', 'AV', 'Drafted (tm/rnd/yr)', 'Salary', 'Pos', 'College/Univ'])
+
+    df.Age = pd.to_numeric(df.Age, errors='ignore').fillna(0).astype(int)
+    df.Wt = pd.to_numeric(df.Wt, errors='ignore').fillna(0).astype(int)
+    df['Ht'] = df['Ht'].apply(feetinches_to_cm).fillna(0).astype(int)
+    df.loc[df['Yrs'] == "Rook", 'Yrs'] = 0
+    df.Yrs = pd.to_numeric(df.Yrs, errors='ignore').fillna(0).astype(int)
 
     # CREATE "DST" player
-    df.loc[len(df.index)] = ['', abbr_to_teamname_end(abbr), '', '', '', '', '', abbr, 0, 0, 0, 0, 0, 1]
+    df.loc[len(df.index)] = ['', abbr_to_teamname_end(abbr), '', '', '', '', abbr, 0, 0, 0, 0, 0, 1]
 
     df.reset_index(drop=True, inplace=True)
     
