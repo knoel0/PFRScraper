@@ -3,7 +3,7 @@ import json
 import sys
 sys.path.insert(0, '/Users/kanemnoel/Desktop/portfolio-projects/pfr-scraper/modules')
 from bs_helper import get_table
-from pfrscraper_helper import teams, abbr_to_teamname_end
+from pfrscraper_helper import teams
 import pandas as pd
 from datetime import datetime
 
@@ -43,7 +43,7 @@ def get_roster(abbr: str) -> pd.DataFrame:
     df.Yrs = pd.to_numeric(df.Yrs, errors='ignore').fillna(0).astype(int)
 
     # CREATE "DST" player
-    df.loc[len(df.index)] = ['', abbr_to_teamname_end(abbr), '', '', '', '', abbr, 0, 0, 0, 0, 0, 1]
+    df.loc[len(df.index)] = ['', teams[abbr]['Team Name'], '', '', '', '', abbr, 0, 0, 0, 0, 0, 1]
 
     df.reset_index(drop=True, inplace=True)
     

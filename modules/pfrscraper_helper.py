@@ -225,9 +225,3 @@ def substring_to_abbr(substring: str) -> str:
         for key, value in nestedDict.items():
             if substring in value:
                 return abbr
-
-def abbr_to_teamname_end(abbr: str) -> str:
-    if len(teams[abbr]["Full Name"].split()) == 3:
-        return teams[abbr]["Full Name"].split()[2]
-    else:
-        return teams[abbr]["Full Name"].split()[1]
