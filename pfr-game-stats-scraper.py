@@ -1,6 +1,10 @@
+import os
+import json
 from helper import teams, urlabbr_to_abbr, substring_to_abbr, get_table, get_all_tagtext_by_class, stats_template
 import pandas as pd
 from datetime import datetime
+
+config = json.load(open(os.path.dirname(os.path.realpath(__file__)) + '/config.json'))
 
 def addFg(player: pd.Series):
     
@@ -182,5 +186,5 @@ awaydef_player_stats['sacks'] = away_sacks
 players.append(list(homedef_player_stats.values()))
 players.append(list(awaydef_player_stats.values()))
 
-path = r'/Users/kanemnoel/Desktop/portfolio-projects/pfr-scrapes/game-stats/' + home_abbr + '/' + 'vs' + away_abbr + datetime.today().strftime('%Y%m%d-%H%M%S') + '.csv'
+path = "{p}{t}/vs{a}{d}-{t}.csv".format(p=config['path_gamestats'], t=home_abbr, a=away_abbr, d=datetime.today().strftime('%Y%m%d-%H%M%S'))
 pd.DataFrame(players, columns=column_names).to_csv(path, index=False, header=True)

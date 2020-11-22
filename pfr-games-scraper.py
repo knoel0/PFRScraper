@@ -1,6 +1,10 @@
+import os
+import json
 from helper import get_table, months, longname_to_abbr
 from datetime import datetime
 import pandas as pd
+
+config = json.load(open(os.path.dirname(os.path.realpath(__file__)) + '/config.json'))
 
 def add_start_home_away(game: pd.Series):
 
@@ -61,7 +65,7 @@ df = df.drop(columns=['Day', 'Date', 'Time', 'W', 'L', 'PtsW', 'PtsL', 'YdsW', '
 df.Week = pd.to_numeric(df.Week, errors='ignore').fillna(0).astype(int)
 
 #add season to path
-path = r'/Users/kanemnoel/Desktop/portfolio-projects/pfr-scrapes/games/' + datetime.today().strftime('%Y%m%d-%H%M%S') + '.csv'
+path = "{p}{d}.csv".format(p=config['path_games'], d=datetime.today().strftime('%Y%m%d-%H%M%S'))
 
 print(df)
 df.to_csv(path, index=False, header=True)
